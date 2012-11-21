@@ -9,7 +9,7 @@ from optparse import OptionParser
 from genauthkeys import GenAuthKeys, getHostFromPublicKeyFile
 
 
-RSYNC_COMMAND = """rsync -a --itemize-changes --checksum --rsh='ssh -o "ConnectTimeout=10"' --backup --suffix=.bak"""
+RSYNC_COMMAND = """rsync -a --itemize-changes --checksum --rsh='ssh -o "ConnectTimeout=10"' --backup --suffix=.bak --delay-updates"""
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_KEY_DIR_NAME = "pubkey.d"
