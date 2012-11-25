@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os, sys
-import commands
-from cStringIO import StringIO
+import subprocess
+from io import StringIO
 
 import genauthkeys
 from optparse import OptionParser
@@ -38,15 +38,15 @@ class DealAuthApp(object):
         rsynccommandline = " ".join((RSYNC_COMMAND,
                                      os.path.join(TMP_DIR, group + ".auth"),
                                      host + ":.ssh/authorized_keys"))
-        status, output = commands.getstatusoutput(rsynccommandline)
+        status, output = subprocess.getstatusoutput(rsynccommandline)
         if status != 0:
-            print '=== error: '+host+' ==='
-            print output
+            print('=== error: '+host+' ===')
+            print(output)
             return False
         if output == "" or not rsync_itemize_is_sended(output):
-            print 'not updated: "'+host+'"'
+            print('not updated: "'+host+'"')
         else:
-            print 'update completed: "'+host+'"'
+            print('update completed: "'+host+'"')
         return True
 
     def updateGroupKeys(self, group):
@@ -71,7 +71,7 @@ class DealAuthApp(object):
             f = open(authfile, "w")
             f.write(newauth)
             f.close()
-        os.chmod(authfile, 0600)
+        os.chmod(authfile, 0o600)
 
 
 def main():
@@ -91,7 +91,7 @@ def main():
         try:
             groups = g.findGroups(args)
         except genauthkeys.NotFoundHostException as inst:
-            print >>sys.stderr, "%s is invalid host name." % str(inst)
+            print("%s is invalid host name." % str(inst), file=sys.stderr)
             sys.exit(2)
         for gr in set(groups):
             app.mkAuthFile(g, gr)

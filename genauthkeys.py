@@ -2,7 +2,7 @@
 
 import os, sys
 import re
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 DEFAULT_CONFIG_FILE_NAME = "dealauth.conf"
 
