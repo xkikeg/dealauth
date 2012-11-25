@@ -3,10 +3,12 @@ dealauth
 
 dealauth is the simple tool to propagate public keys among the servers via rsync.
 
+If you are accustomed to Japanese, README.ja.md is good for you.
+
 How to use
 ---------------------------------------------------------------------------
 
-1. Let's create `pubkey.d/` directory in this directory. This directory is ignored by Git. Alternatively you can also specify the exact path of arbitrary directory (actually the directory name needs not to be `pudbkey.d`) with `-k` or `--key-dir` option.
+1. Let's create `pubkey.d/` directory in this directory. Alternatively you can also specify the exact path of arbitrary directory (actually the directory name needs not to be `pudbkey.d`) with `-k` or `--key-dir` option.
 
    The sample `pubkey.d/` directory exists in `doc/` directory and it will help you to understand the guide below.
 
@@ -29,7 +31,7 @@ How to use
 
    You have to be careful not to use `tmp` for group name since `pubkey.d/tmp/` is used for temporal directory. Otherwise you have to specify temporal directory explicitly with `-t` or `--tmp-dir` option.
 
-3. Next step is to prepare public keys. In `pubkey.d/`, you should create directories corresponding to groups in config file. You should create `foo`, `bar`, `client`, `foobar`, and `baz` in the above example. Then you should place each hosts' public keys into their group directories. The name of the public keys should `<hostname>.pub`.
+3. Next step is to prepare public keys. In `pubkey.d/`, you should create directories corresponding to groups in config file. You should create `foo`, `bar`, `client`, `foobar`, and `baz` in the above example. Then you should place each hosts' public keys into their group directories. The name of the public keys should `<hostname>.pub`. <hostname> is used by SSH command.
 
 4. This is the last step! Let's invoke the command.
 
