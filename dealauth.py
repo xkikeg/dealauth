@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import os, sys
 from commands import getstatusoutput
 from cStringIO import StringIO
@@ -7,7 +9,6 @@ from cStringIO import StringIO
 import genauthkeys
 from argparse import ArgumentParser
 from genauthkeys import GenAuthKeys, getHostFromPublicKeyFile
-
 
 RSYNC_COMMAND = """rsync -a --itemize-changes --checksum --rsh='ssh -o "ConnectTimeout=10"' --backup --suffix=.bak --delay-updates"""
 
@@ -39,13 +40,13 @@ class DealAuthApp(object):
                                      host + ":.ssh/authorized_keys"))
         status, output = getstatusoutput(rsynccommandline)
         if status != 0:
-            print '=== error: '+host+' ==='
-            print output
+            print('=== error: '+host+' ===')
+            print(output)
             return False
         if output == "" or not rsync_itemize_is_sended(output):
-            print 'not updated: "'+host+'"'
+            print('not updated: "'+host+'"')
         else:
-            print 'update completed: "'+host+'"'
+            print('update completed: "'+host+'"')
         return True
 
     def updateGroupKeys(self, group):
@@ -93,7 +94,7 @@ def main():
         try:
             groups = g.findGroups(hosts)
         except genauthkeys.NotFoundHostException as inst:
-            print >>sys.stderr, "%s is invalid host name." % str(inst)
+            print("%s is invalid host name." % str(inst), file=sys.stderr)
             sys.exit(2)
         for gr in set(groups):
             app.mkAuthFile(g, gr)
