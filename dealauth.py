@@ -14,10 +14,9 @@ RSYNC_COMMAND = """rsync -a --itemize-changes --checksum --rsh='ssh -o "ConnectT
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 
-DEFAULT_KEY_DIR_NAME = "pubkey.d"
-DEFAULT_TMP_DIR_NAME = os.path.join(DEFAULT_KEY_DIR_NAME, "tmp")
+DEFAULT_KEY_DIR_NAME = "./pubkey.d"
+DEFAULT_TMP_DIR_NAME = "tmp"
 DEFAULT_KEY_DIR = os.path.join(SCRIPT_DIR, DEFAULT_KEY_DIR_NAME)
-DEFAULT_TMP_DIR = os.path.join(SCRIPT_DIR, DEFAULT_TMP_DIR_NAME)
 
 def defaultGet(default, x):
     return x if x is not None else default
@@ -29,6 +28,10 @@ def rsync_itemize_is_sended(result):
 
 class DealAuthApp(object):
     def __init__(self, KEY_DIR, TMP_DIR):
+        KEY_DIR = KEY_DIR if KEY_DIR else DEFAULT_KEY_DIR
+        if not os.path.isdir(KEY_DIR):
+            raise "Specified KEY_DIR does not exists: " + KEY_DIR
+        TMP_DIR = TMP_DIR if TMP_DIR else os.path.join(KEY_DIR, DEFAULT_TMP_DIR_NAME)
         os.path.isdir(TMP_DIR) or os.mkdir(TMP_DIR)
         self.KEY_DIR = KEY_DIR
         self.TMP_DIR = TMP_DIR
@@ -77,11 +80,11 @@ class DealAuthApp(object):
 def main():
     parser = ArgumentParser(description="Generate & maintain authorized_keys above all nodes")
     parser.add_argument("-k", "--key-dir",
-                        default=DEFAULT_KEY_DIR_NAME,
-                        help="directory containing public keys (default: %(default)s)")
+                        default=None,
+                        help="directory containing public keys (default: " + DEFAULT_KEY_DIR_NAME + ")")
     parser.add_argument("-t", "--tmp-dir",
-                        default=DEFAULT_TMP_DIR_NAME,
-                        help="directory containing temporary authfiles (default: %(default)s)")
+                        default=None,
+                        help="directory containing temporary authfiles (default: " + os.path.join("KEY_DIR", DEFAULT_TMP_DIR_NAME) + ")")
     parser.add_argument("hosts", nargs="*",
                         help="Hosts to update authorized_keys")
 
